@@ -1,70 +1,67 @@
-const express=require("express");
+const express=require("express")
+const mogoose=require("mongoose");
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const  jwt = require('jsonwebtoken');
 
+const Usermodel = require("../Models/User..model");
 
-const Usermodel=require("../models/User.model");
-const { send } = require("process");
 
 
 const UserRouter=express.Router();
 
-
 UserRouter.post("/signup",async(req,res)=>{
-    const{email,password,name,age}=req.body;
+    const {email,password,name ,age}=req.body;
+    const Presentuser=await Usermodel.findOne({email});
+    if(Presentuser){
+      res.send("username already exist,try another user name")
+    }
     try{
-        let presentuser=await Usermodel.findOne({email});
-        if(presentuser){
-            res.send("username already exist")
-        }else{
-
-            bcrypt.hash(password, 4, async function(err, hash) {
+         
+            bcrypt.hash(password, 5, async function(err, hash) {
                 const user=new Usermodel({email,password:hash,name,age})
                 await user.save();
-                res.send("Singup Succefully")
-             
+                res.send("signup successfully")
             });
 
-        }
-      
-
+          
     }
     catch(err){
-            console.log(err)
-            res.send("error in signup")
+        console.log(err)
+        res.send(" error in sign up ,try again later");
     }
 
-   
 })
 
-UserRouter.post("/login",async(req,res)=>{
-    const {email,password}=req.body;
-    const puser=await Usermodel.find({email});
-    const hash_password=puser[0].password;
-    const userId=puser[0]._id;
-    try{
-        bcrypt.compare(password, hash_password, function(err, result) {
-            if(result){
-                const token= jwt.sign({ "userId":userId }, 'shhhhh');
-                if(token){
-                    res.send({"mess":"longin succefull",token:token})
-                }else{
-                    res.send("error in getting token")
-                }
 
+UserRouter.post("/login",async(req,res)=>{
+    const{email,password}=req.body;
+    try{
+        const checkusers=await Usermodel.find({email});
+        if(checkusers.length>0){
+           const hash_password=checkusers[0].password;
+          
+           bcrypt.compare(password, hash_password).then(function(result) {
+            if(result){
+                const token = jwt.sign({ "userId":checkusers[0]._id }, 'hush');
+                res.send({"msg":"Login successfull","token" : token})
             }else{
-                res.send("password or username is wrong")
+                res.send("Login failed")
             }
         });
 
+        }
 
     }
     catch(err){
-console.log(err);
-res.send("error in login")
-
+        console.log(err);
+        res.send("login failed ,try again later");
     }
-    
-})
+   
 
-module.exports=UserRouter;
+});
+
+
+module.exports=UserRouter
+
+
+

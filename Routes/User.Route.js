@@ -27,13 +27,7 @@ userRouter.post("/register", async (req, res) => {
 
 })
 
-userRouter.patch("/update/:id",async(req,res)=>{
-    let data=req.body;
-    let id=req.params.id
-    await Usermodel.findByIdAndUpdate({_id:id},data)
 
-
-})
 module.exports=userRouter
 
 

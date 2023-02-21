@@ -3,7 +3,7 @@ const express=require("express");
 
 
 
-const Blogmodel=require("../models/blog.model")
+const Blogmodel=require("../Models/Blogs.Model")
 const Authenticate=require("../Middleware/Authentication");
 
 

@@ -3,8 +3,7 @@ const cors=require("cors");
 
 
 const connection=require("./Config/db")
-const bloguserRouter=require("./routes/user.router");
-const blogRouter=require("./routes/blog.router");
+const blogRouter=require("./Routes/Blogs.Route");
 
 
 const app=express();
@@ -16,7 +15,6 @@ app.use(cors({
 
 
 
-app.use("/bloguser",bloguserRouter);
 app.use("/blogs",blogRouter);
 
 

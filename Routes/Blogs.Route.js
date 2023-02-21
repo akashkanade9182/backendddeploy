@@ -20,6 +20,17 @@ blogRouter.get("/getallblogs",async(req,res)=>{
     res.status(400).send("getting error in blogs")
  }
 })
+blogRouter.get("/getallblogs/:id",async(req,res)=>{
+    let {id}=req.Params;
+
+    try{
+    let todos=await Blogmodel.findById({_id:id});
+    res.status(200).send(todos)
+    }
+    catch{
+       res.status(400).send("getting error in blogs")
+    }
+   })
 
 blogRouter.use(Authenticate)
 blogRouter.post("/addblog",async(req,res)=>{

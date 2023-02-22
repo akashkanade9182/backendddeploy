@@ -15,6 +15,7 @@ blogRouter.get("/getallblogs",async(req,res)=>{
      let query=req.query;
      let filter={};
      query.category && (filter.category={ $in: query.category});
+     query.author && (filter.author=query.author)
  try{
  let todos=await Blogmodel.find(filter);
  res.status(200).send(todos)

@@ -13,9 +13,10 @@ const blogRouter=express.Router();
 
 blogRouter.get("/getallblogs",async(req,res)=>{
      let query=req.query;
+     let author=req.body.author;
      let filter={};
      query.category && (filter.category={ $in: query.category});
-     query.author && (filter.author=query.author)
+     author && (filter.author=author)
  try{
  let todos=await Blogmodel.find(filter);
  res.status(200).send(todos)
@@ -23,6 +24,19 @@ blogRouter.get("/getallblogs",async(req,res)=>{
  catch{
     res.status(400).send("getting error in blogs")
  }
+})
+blogRouter.get("/getallblogs",async(req,res)=>{
+   let query=req.query;
+   let filter={};
+   query.category && (filter.category={ $in: query.category});
+   query.author && (filter.author=query.author)
+try{
+let todos=await Blogmodel.find(filter);
+res.status(200).send(todos)
+}
+catch{
+  res.status(400).send("getting error in blogs")
+}
 })
 
 

@@ -12,8 +12,11 @@ const Authenticate=require("../Middleware/Authentication");
 const blogRouter=express.Router();
 
 blogRouter.get("/getallblogs",async(req,res)=>{
+     let query=req.query;
+     let filter={};
+     query.category && (filter.category={ $in: query.category});
  try{
- let todos=await Blogmodel.find();
+ let todos=await Blogmodel.find(filter);
  res.status(200).send(todos)
  }
  catch{

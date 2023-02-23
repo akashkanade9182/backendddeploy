@@ -7,6 +7,7 @@ const Usermodel=require("../Models/User.Model")
 
 bloguserRouter.post("/signup",async(req,res)=>{
     const{name,avatar,email,password}=req.body;
+    let followers=[];
     try{
         let presentuser=await Usermodel.findOne({email});
         if(presentuser){
@@ -14,7 +15,7 @@ bloguserRouter.post("/signup",async(req,res)=>{
         }else{
 
             bcrypt.hash(password, 4, async function(err, hash) {
-                const user=new Usermodel({email,password:hash,name,avatar})
+                const user=new Usermodel({email,password:hash,name,avatar,followers})
                 await user.save();
                 res.status(200).send("Singup Succefully")
              

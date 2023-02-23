@@ -4,6 +4,7 @@ const cors=require("cors");
 
 const connection=require("./Config/db")
 const blogRouter=require("./Routes/Blogs.Route");
+const bloguserRouter=require("./Routes/User.Route")
 
 
 const app=express();
@@ -16,7 +17,7 @@ app.use(cors({
 
 
 app.use("/blogs",blogRouter);
-
+app.use("/bloguser",bloguserRouter);
 
 app.listen(7000,async()=>{
  try{

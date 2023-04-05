@@ -1,0 +1,82 @@
+const express=require("express");
+
+
+
+
+const Blogmodel=require("../Models/Blogs.Model")
+const Authenticate=require("../Middleware/Authentication");
+
+
+
+
+const blogRouter=express.Router();
+
+blogRouter.get("/getallblogs",async(req,res)=>{
+     let query=req.query;
+     let author=req.body.author;
+     let filter={};
+     query.category && (filter.category={ $in: query.category});
+     author && (filter.author=author)
+ try{
+ let todos=await Blogmodel.find(filter);
+ res.status(200).send(todos)
+ }
+ catch{
+    res.status(400).send("getting error in blogs")
+ }
+})
+blogRouter.get("/getallblogs",async(req,res)=>{
+   let query=req.query;
+   let filter={};
+   query.category && (filter.category={ $in: query.category});
+   query.author && (filter.author=query.author)
+try{
+let todos=await Blogmodel.find(filter);
+res.status(200).send(todos)
+}
+catch{
+  res.status(400).send("getting error in blogs")
+}
+})
+
+
+blogRouter.get("/getallblogs/:id",async(req,res)=>{
+    let id=req.params.id
+
+    try{
+    let todos=await Blogmodel.findById({_id:id});;
+    res.status(200).send(todos)
+    consol.log(id)
+    }
+    catch{
+       res.status(400).send("getting error in blogs")
+    }
+   })
+
+
+   
+
+blogRouter.use(Authenticate)
+blogRouter.post("/addblog",async(req,res)=>{
+    const{title,content,date,category,author,avatar,name,image}=req.body
+    try{
+  
+                const todos=new Blogmodel({title,content,date,category,author,avatar,name,image})
+                await todos.save();
+                res.status(200).send("post added Succefully")
+                console.log(data)
+             
+      
+
+    }
+    catch(err){
+            console.log(err)
+            res.status(400).send("error in post adding")
+    }
+
+})
+    
+
+
+
+module.exports=blogRouter

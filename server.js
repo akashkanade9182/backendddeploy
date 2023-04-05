@@ -5,7 +5,7 @@ const cors=require("cors")
 
 const connection=require("./Config/db");
 const userRouter = require("./Routes/User.Route");
-
+const CourseRoute=require("./Routes/Course.route")
 
 const app=express();
 app.use(express.json())
@@ -14,6 +14,7 @@ app.use(cors({
 }))
 
 app.use("/",userRouter)
+app.use("/getcourse",CourseRoute)
 
 
 

@@ -3,8 +3,9 @@ const cors=require("cors");
 
 
 const connection=require("./Config/db")
-const blogRouter=require("./Routes/Blogs.Route");
-const bloguserRouter=require("./Routes/User.Route")
+const bloguserRouter=require("./routes/user.router.js");
+const blogRouter=require("./routes/blog.router");
+
 
 const app=express();
 app.use(express.json());
@@ -12,12 +13,12 @@ app.use(cors({
     origin:"*"
 }))
 
-app.use("/",userRouter)
 
 
 
-app.use("/blogs",blogRouter);
 app.use("/bloguser",bloguserRouter);
+app.use("/blogs",blogRouter);
+
 
 app.listen(7000,async()=>{
  try{

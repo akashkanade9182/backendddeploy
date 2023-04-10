@@ -10,13 +10,13 @@ bloguserRouter.post("/signup",async(req,res)=>{
     try{
         let presentuser=await Usermodel.findOne({email});
         if(presentuser){
-            res.send("username already exist")
+         return  res.status(422).send("username already exist")
         }else{
 
             bcrypt.hash(password, 4, async function(err, hash) {
                 const user=new Usermodel({email,password:hash,name,avatar})
                 await user.save();
-                res.status(200).send("Singup Succefully")
+              return   res.status(200).send("Singup Succefully")
              
             });
 
@@ -26,7 +26,7 @@ bloguserRouter.post("/signup",async(req,res)=>{
     }
     catch(err){
             console.log(err)
-            res.status(400).send("error in signup")
+         return   res.status(411).send("error in signup")
     }
 
 })

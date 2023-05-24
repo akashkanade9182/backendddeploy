@@ -19,7 +19,6 @@ productRouter.get("/getall",async(req,res)=>{
      catch{
          return res.status(400).send("error in getting products")
 
-          console.log("error in getting products")
      }
 })
 
